@@ -1,20 +1,21 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
   <!-- Detect OS platform -->
   <PropertyGroup>
-    <WebDriverPlatform Condition=" '$(WebDriverPlatform)' == '' And '$(RuntimeIdentifier.StartsWith(&quot;win&quot;))'=='True' ">win32</WebDriverPlatform>
-    <WebDriverPlatform Condition=" '$(WebDriverPlatform)' == '' And '$(RuntimeIdentifier.StartsWith(&quot;osx&quot;))'=='True' ">mac64</WebDriverPlatform>
-    <WebDriverPlatform Condition=" '$(WebDriverPlatform)' == '' And '$(OS)' == 'Windows_NT' ">win32</WebDriverPlatform>
-    <WebDriverPlatform Condition=" '$(WebDriverPlatform)' == '' And '$(OS)' == 'Unix' And Exists ('/Applications') ">mac64</WebDriverPlatform>
+    <EdgeWebDriverPlatform Condition=" '$(EdgeWebDriverPlatform)' == '' And '$(RuntimeIdentifier.StartsWith(&quot;win&quot;))'=='True' And '$(RuntimeIdentifier.Contains(&quot;x86&quot;))'=='True' ">win32</EdgeWebDriverPlatform>
+    <EdgeWebDriverPlatform Condition=" '$(EdgeWebDriverPlatform)' == '' And '$(RuntimeIdentifier.StartsWith(&quot;win&quot;))'=='True' And '$(RuntimeIdentifier.Contains(&quot;x64&quot;))'=='True' ">win64</EdgeWebDriverPlatform>
+    <EdgeWebDriverPlatform Condition=" '$(EdgeWebDriverPlatform)' == '' And '$(RuntimeIdentifier.StartsWith(&quot;osx&quot;))'=='True' ">mac64</EdgeWebDriverPlatform>
+    <EdgeWebDriverPlatform Condition=" '$(EdgeWebDriverPlatform)' == '' And '$(OS)' == 'Windows_NT' And Exists ('$(windir)\SysWOW64')">win64</EdgeWebDriverPlatform>
+    <EdgeWebDriverPlatform Condition=" '$(EdgeWebDriverPlatform)' == '' And '$(OS)' == 'Windows_NT'">win32</EdgeWebDriverPlatform>
+    <EdgeWebDriverPlatform Condition=" '$(EdgeWebDriverPlatform)' == '' And '$(OS)' == 'Unix' And Exists ('/Applications') ">mac64</EdgeWebDriverPlatform>
   </PropertyGroup>
 
   <PropertyGroup>
-    <MsEdgeDriverName Condition="'$(WebDriverPlatform)' == 'win32'">msedgedriver.exe</MsEdgeDriverName>
+    <MsEdgeDriverName Condition="'$(EdgeWebDriverPlatform)' == 'win32' Or '$(EdgeWebDriverPlatform)' == 'win64' ">msedgedriver.exe</MsEdgeDriverName>
     <MsEdgeDriverName Condition="'$(MsEdgeDriverName)' == ''">msedgedriver</MsEdgeDriverName>
   </PropertyGroup>
 
   <PropertyGroup>
-    <MsEdgeDriverSrcPath>$(MSBuildThisFileDirectory)..\driver\$(WebDriverPlatform)\$(MsEdgeDriverName)</MsEdgeDriverSrcPath>
+    <MsEdgeDriverSrcPath>$(MSBuildThisFileDirectory)..\driver\$(EdgeWebDriverPlatform)\$(MsEdgeDriverName)</MsEdgeDriverSrcPath>
     <MsEdgeDriverTargetPath Condition=" '$(MsEdgeDriverTargetPath)' == '' ">$(TargetDir)</MsEdgeDriverTargetPath>
   </PropertyGroup>
 
@@ -22,7 +23,7 @@
     <Exec Command="chmod +x &quot;$(MsEdgeDriverSrcPath)&quot;" />
   </Target>
 
-  <!-- Detect is project type Web or Not. -->
+  <!-- Detect that project type is Web or Not. -->
   <Choose>
     <When Condition="'$(ProjectTypeIsWeb)' == ''">
       <PropertyGroup>
@@ -34,18 +35,16 @@
       </PropertyGroup>
     </When>
   </Choose>
-
-  <!-- Detect definition of compilation symbol that is "_PUBLISH_CHROMEDRIVER", or "PublishMsEdgeDriver" msbuild property. -->
+  <!-- Detect definition of compilation symbol that is "_PUBLISH_MSEDGEDRIVER", or "PublishMsEdgeDriver" msbuild property. -->
   <Choose>
     <When Condition="'$(PublishMsEdgeDriver)' == ''">
       <PropertyGroup>
         <DefineConstantsPadded Condition="'$(DefineConstantsPadded)' == ''">;$(DefineConstants);</DefineConstantsPadded>
-        <PublishMsEdgeDriver Condition="$(DefineConstantsPadded.IndexOf(';_PUBLISH_CHROMEDRIVER;')) != -1">true</PublishMsEdgeDriver>
+        <PublishMsEdgeDriver Condition="$(DefineConstantsPadded.IndexOf(';_PUBLISH_MSEDGEDRIVER;')) != -1">true</PublishMsEdgeDriver>
         <PublishMsEdgeDriver Condition="'$(PublishMsEdgeDriver)' == ''">false</PublishMsEdgeDriver>
       </PropertyGroup>
     </When>
   </Choose>
-
   <!-- Setup driver file as project item if publishing driver file is enabled. -->
   <Choose>
     <When Condition="'$(PublishMsEdgeDriver)|$(ProjectTypeIsWeb)' == 'true|true'">
@@ -67,7 +66,6 @@
       </ItemGroup>
     </When>
   </Choose>
-  
   <!-- If publishing driver file is disabled (it's default behavior), define "copy" and "clean" build task. -->
   <Target Name="CopyMsEdgeDriverToBin" BeforeTargets="AfterBuild" Condition="'$(PublishMsEdgeDriver)' == 'false'">
     <Copy SourceFiles="$(MsEdgeDriverSrcPath)" DestinationFiles="$(MsEdgeDriverTargetPath)$(MsEdgeDriverName)" SkipUnchangedFiles="true"></Copy>
@@ -75,5 +73,4 @@
   <Target Name="DeleteMsEdgeDriverFromBin" BeforeTargets="AfterClean" Condition="'$(PublishMsEdgeDriver)' == 'false'">
     <Delete Files="$(MsEdgeDriverTargetPath)$(MsEdgeDriverName)"></Delete>
   </Target>
-
 </Project>

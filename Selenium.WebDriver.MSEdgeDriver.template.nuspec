@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Selenium.WebDriver.MSEdgeDriver</id>
+    <version>_version_-beta</version>
+    <title>Selenium.WebDriver.EdgeChromiumDriver(Win64, Mac)</title>
+    <authors>leandrogomes</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>https://github.com/leandrodotec/nupkg-selenium-webdriver-msedgedriver</projectUrl>
+    <license type="file">license/license.txt</license>
+    <description>Installs the new Edge (Chromium) WebDriver Package to be used with Selenium. 
+      Just like the other Selenium.WebDriver packages, "msedgedriver(.exe)" is copied to bin folder from package folder when the build process.
+      NuGet package restoring ready, and no need to commit "msedgedriver(.exe)" binary into source code control repository.
+      CONTRIBUTORS:  next version I will create a project at github.com.</description>
+    <summary>Edge (Chromium) WebDriver Package (Win64, Mac).</summary>
+    <tags>Selenium Edge Chromium WebDriver msedgedriver</tags>
+  </metadata>
+  <files>
+    <file src="download\_version_\edgedriver_win32\msedgedriver.exe" target="driver/win32"/>
+    <file src="download\_version_\edgedriver_win64\msedgedriver.exe" target="driver/win64"/>
+    <file src="download\_version_\edgedriver_mac64\msedgedriver" target="driver/mac64/msedgedriver"/>
+    <file src="Selenium.WebDriver.MSEdgeDriver.targets" target="build"/>
+    <file src="license.txt" target="license/license.txt"/>
+  </files>
+</package>
