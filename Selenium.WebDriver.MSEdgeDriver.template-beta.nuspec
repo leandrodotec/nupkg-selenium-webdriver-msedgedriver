@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Selenium.WebDriver.MSEdgeDriver</id>
-    <version>_version_</version>
+    <version>_version_-beta</version>
     <title>Selenium.WebDriver.EdgeChromiumDriver(Win64, Mac)</title>
     <authors>leandrogomes</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -11,7 +11,10 @@
     <description>Installs the new Edge (Chromium) WebDriver Package to be used with Selenium. 
       Just like the other Selenium.WebDriver packages, "msedgedriver(.exe)" is copied to bin folder from package folder when the build process.
       NuGet package restoring ready, and no need to commit "msedgedriver(.exe)" binary into source code control repository.
-      CONTRIBUTORS: Help improve this project at https://github.com/leandrodotec/nupkg-selenium-webdriver-msedgedriver.</description>
+      CONTRIBUTORS: Help improve this project at https://github.com/leandrodotec/nupkg-selenium-webdriver-msedgedriver.
+	  
+	  This is a pre-release.
+	  </description>
     <summary>Edge (Chromium) WebDriver Package (Win64, Mac).</summary>
     <tags>Selenium Edge Chromium WebDriver msedgedriver</tags>
   </metadata>
