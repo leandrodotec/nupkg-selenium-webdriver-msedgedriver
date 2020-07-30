@@ -18,9 +18,9 @@ getPackage.bat <version>
 example:
 
 ```
-getPackage.bat 83.0.478.58
+getPackage.bat 84.0.522.49
 
-REM -> creates a package to '.\dist\Selenium.WebDriver.MSEdgeDriver.83.0.478.58.nupkg'.
+REM -> creates a package to '.\dist\Selenium.WebDriver.MSEdgeDriver.84.0.522.49.nupkg'.
 ```
 
 
