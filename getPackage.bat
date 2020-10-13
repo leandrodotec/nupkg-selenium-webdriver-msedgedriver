@@ -40,4 +40,6 @@ echo or
 echo getPackage.bat 81.12.654 pre   ----- this generates a nuget package with a pre release version for testing.
 echo .
 echo .
+echo to get your system's MsEdge version:
+echo powershell.exe (Get-Item '"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe"').VersionInfo
 :finish
