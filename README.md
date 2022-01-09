@@ -33,4 +33,4 @@ getPackage.bat 84.0.522.49
 
 # Contributing
 
-Although most of the process is automated, I still need to manually check for updates and run getPackage.bat .  So there are always improvements that can be made. Create a pull request or message me :-).
+Most the process is automated, but I still need to check MS Edge Driver's page and execute the batch file manually. I am trying to do this once a month. If you would like to have faster releases, please contact me to become a contributor.
