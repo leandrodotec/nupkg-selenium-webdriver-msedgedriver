@@ -8,10 +8,11 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <projectUrl>https://github.com/leandrodotec/nupkg-selenium-webdriver-msedgedriver</projectUrl>
     <license type="file">license/license.txt</license>
-    <description>Installs the new Edge (Chromium) WebDriver Package to be used with Selenium. 
-      Just like the other Selenium.WebDriver packages, "msedgedriver(.exe)" is copied to bin folder from package folder when the build process.
-      NuGet package restoring ready, and no need to commit "msedgedriver(.exe)" binary into source code control repository.
-      CONTRIBUTORS: Help improve this project at https://github.com/leandrodotec/nupkg-selenium-webdriver-msedgedriver.</description>
+    <description>
+Installs the new Edge (Chromium) WebDriver Package to be used with Selenium. Just like the other Selenium.WebDriver packages, "msedgedriver(.exe)" is copied from package folder to bin folder when the project builds.
+
+CONTRIBUTORS: Help improve this project at https://github.com/leandrodotec/nupkg-selenium-webdriver-msedgedriver.
+</description>
     <summary>Edge (Chromium) WebDriver Package (Win64, Mac).</summary>
     <tags>Selenium Edge Chromium WebDriver msedgedriver</tags>
   </metadata>
