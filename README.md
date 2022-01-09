@@ -33,4 +33,4 @@ getPackage.bat 84.0.522.49
 
 # Contributing
 
-Although all the process is automated, there are always improvements that can be made. Create a pull request or message me :-).
+Although most of the process is automated, I still need to manually check for updates and run getPackage.bat .  So there are always improvements that can be made. Create a pull request or message me :-).
