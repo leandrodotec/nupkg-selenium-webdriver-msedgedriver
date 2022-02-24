@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -19,5 +19,14 @@
     <ProjectReference Include="..\Firefox\Firefox.csproj" />
     <ProjectReference Include="..\MsEdgeClient\MsEdgeClient.csproj" />
   </ItemGroup>
+
+    <Target Name="CopyMsEdgeDriverToBin" BeforeTargets="AfterBuild">
+	    <Copy SourceFiles="$(SolutionDir)MsEdgeClient\bin\$(Configuration)\$(TargetFramework)\msedgedriver.exe" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true"/>
+	    <Message Text="$(MSBuildProjectName) -> $(SolutionDir)MsEdgeClient\bin\$(Configuration)\$(TargetFramework)\msedgedriver.exe" Importance="high" />
+    </Target>
+	
+    <Target Name="DeleteMsEdgeDriverFromBin" BeforeTargets="AfterClean">
+	    <Delete Files="$(TargetDir)msedgedriver.exe"></Delete>
+    </Target>
 
 </Project>

@@ -86,6 +86,8 @@
   <!-- If publishing driver file is disabled (it's default behavior), define "copy" and "clean" build task. -->
   <Target Name="CopyMsEdgeDriverToBin" BeforeTargets="AfterBuild" Condition="'$(PublishMsEdgeDriver)' == 'false'">
     <Copy SourceFiles="$(MsEdgeDriverSrcPath)" DestinationFiles="$(MsEdgeDriverTargetPath)$(MsEdgeDriverName)" SkipUnchangedFiles="true"></Copy>
+     <Message Text="sourcefiles: $(MsEdgeDriverSrcPath)" />
+     <Message Text="destinationfiles: $(MsEdgeDriverTargetPath)$(MsEdgeDriverName)" Importance="high" />
   </Target>
   <Target Name="DeleteMsEdgeDriverFromBin" BeforeTargets="AfterClean" Condition="'$(PublishMsEdgeDriver)' == 'false'">
     <Delete Files="$(MsEdgeDriverTargetPath)$(MsEdgeDriverName)"></Delete>
