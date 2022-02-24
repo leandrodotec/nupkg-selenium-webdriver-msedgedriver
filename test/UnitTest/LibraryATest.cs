@@ -10,7 +10,7 @@ namespace WebDriver.EdgeChromiumDriver.UnitTest
         }
 
         [Test]
-        public void Test1()
+        public void EdgeTest()
         {
             var g = new MsEdgeClient.EdgeClient();
             var result = g.Search();
@@ -19,7 +19,16 @@ namespace WebDriver.EdgeChromiumDriver.UnitTest
         }
 
         [Test]
-        public void Test2()
+        public void ChromeTest()
+        {
+            var g = new ChromeClient.ChromeClient();
+            var result = g.Search();
+
+            Assert.AreEqual("", result);
+        }
+
+        [Test]
+        public void FirefoxTest()
         {
             var g = new ChromeClient.ChromeClient();
             var result = g.Search();

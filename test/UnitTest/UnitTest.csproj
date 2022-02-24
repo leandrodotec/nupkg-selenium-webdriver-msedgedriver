@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ChromeClient\ChromeClient.csproj" />
+    <ProjectReference Include="..\Firefox\Firefox.csproj" />
     <ProjectReference Include="..\MsEdgeClient\MsEdgeClient.csproj" />
   </ItemGroup>
 
