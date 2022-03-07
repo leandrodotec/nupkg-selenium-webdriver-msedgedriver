@@ -3,7 +3,7 @@
   <metadata>
     <id>Selenium.WebDriver.MSEdgeDriver</id>
     <version>_version_</version>
-    <title>Selenium.WebDriver.EdgeChromiumDriver(Win32, Win64, Mac)</title>
+    <title>Selenium.WebDriver.EdgeChromiumDriver(Win32, Win64, Mac, Linux64)</title>
     <authors>leandrogomes</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <projectUrl>https://github.com/leandrodotec/nupkg-selenium-webdriver-msedgedriver</projectUrl>
