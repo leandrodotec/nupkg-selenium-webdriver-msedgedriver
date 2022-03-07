@@ -1,2 +1,6 @@
 /dist/*
 /download/*
+**/v17/*
+**/bin/*
+**/obj/*
+**/.vs/*

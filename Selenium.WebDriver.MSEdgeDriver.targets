@@ -1,76 +1,96 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <!-- Detect OS platform -->
-  <PropertyGroup>
-    <EdgeWebDriverPlatform Condition=" '$(EdgeWebDriverPlatform)' == '' And '$(RuntimeIdentifier.StartsWith(&quot;win&quot;))'=='True' And '$(RuntimeIdentifier.Contains(&quot;x86&quot;))'=='True' ">win32</EdgeWebDriverPlatform>
-    <EdgeWebDriverPlatform Condition=" '$(EdgeWebDriverPlatform)' == '' And '$(RuntimeIdentifier.StartsWith(&quot;win&quot;))'=='True' And '$(RuntimeIdentifier.Contains(&quot;x64&quot;))'=='True' ">win64</EdgeWebDriverPlatform>
-    <EdgeWebDriverPlatform Condition=" '$(EdgeWebDriverPlatform)' == '' And '$(RuntimeIdentifier.StartsWith(&quot;osx&quot;))'=='True' ">mac64</EdgeWebDriverPlatform>
-    <EdgeWebDriverPlatform Condition=" '$(EdgeWebDriverPlatform)' == '' And '$(OS)' == 'Windows_NT' And Exists ('$(windir)\SysWOW64')">win64</EdgeWebDriverPlatform>
-    <EdgeWebDriverPlatform Condition=" '$(EdgeWebDriverPlatform)' == '' And '$(OS)' == 'Windows_NT'">win32</EdgeWebDriverPlatform>
-    <EdgeWebDriverPlatform Condition=" '$(EdgeWebDriverPlatform)' == '' And '$(OS)' == 'Unix' And Exists ('/Applications') ">mac64</EdgeWebDriverPlatform>
-  </PropertyGroup>
 
-  <PropertyGroup>
-    <MsEdgeDriverName Condition="'$(EdgeWebDriverPlatform)' == 'win32' Or '$(EdgeWebDriverPlatform)' == 'win64' ">msedgedriver.exe</MsEdgeDriverName>
-    <MsEdgeDriverName Condition="'$(MsEdgeDriverName)' == ''">msedgedriver</MsEdgeDriverName>
-  </PropertyGroup>
+  <Import Project="$(MSBuildThisFileDirectory)DefinePropertiesMSEdgeDriver.targets" />
 
-  <PropertyGroup>
-    <MsEdgeDriverSrcPath>$(MSBuildThisFileDirectory)..\driver\$(EdgeWebDriverPlatform)\$(MsEdgeDriverName)</MsEdgeDriverSrcPath>
-    <MsEdgeDriverTargetPath Condition=" '$(MsEdgeDriverTargetPath)' == '' ">$(TargetDir)</MsEdgeDriverTargetPath>
-  </PropertyGroup>
+  <Target Name="DefinePropertiesMSEdgeDriver" BeforeTargets="BeforeClean;BeforeBuild;BeforePublish;ChmodMsEdgeDriver" Condition="'$(MsEdgeDriverTargetPath)' == ''">
+    
+    <!--
+    On a Non-SDK style project, and at the first build, "DefineProperties*.targets"
+    will not be imported and the driver file will not be copied into the output folder,
+    due to restoring "packages" folder is too late.
+    To avoid this problem, this target reevaluates "DefineProperties*.targets" if necessary
+    before the "Build" target.
+    -->
 
-  <Target Name="ChmodMsEdgeDriver" BeforeTargets="BeforeBuild" Condition=" '$(OS)' != 'Windows_NT' AND '$(WebDriverPlatform)' != 'win32'">
-    <Exec Command="chmod +x &quot;$(MsEdgeDriverSrcPath)&quot;" />
+    <!-- Detect OS platform -->
+    <PropertyGroup>
+      <WebDriverPlatform Condition=" '$(WebDriverPlatform)' == '' And '$(RuntimeIdentifier.StartsWith(&quot;win&quot;))'=='True' ">win32</WebDriverPlatform>
+      <WebDriverPlatform Condition=" '$(WebDriverPlatform)' == '' And '$(RuntimeIdentifier.StartsWith(&quot;osx&quot;))'=='True' ">mac64</WebDriverPlatform>
+      <WebDriverPlatform Condition=" '$(WebDriverPlatform)' == '' And '$(RuntimeIdentifier.StartsWith(&quot;linux&quot;))'=='True' ">linux64</WebDriverPlatform>
+      <WebDriverPlatform Condition=" '$(WebDriverPlatform)' == '' And '$(OS)' == 'Windows_NT' ">win32</WebDriverPlatform>
+      <WebDriverPlatform Condition=" '$(WebDriverPlatform)' == '' And '$(OS)' == 'Unix' And Exists ('/Applications') ">mac64</WebDriverPlatform>
+      <WebDriverPlatform Condition=" '$(WebDriverPlatform)' == '' And '$(OS)' == 'Unix' ">linux64</WebDriverPlatform>
+    </PropertyGroup>
+
+    <PropertyGroup>
+      <MsEdgeDriverName Condition="'$(MsEdgeDriverName)' == '' And '$(WebDriverPlatform)' == 'win32'">msedgedriver.exe</MsEdgeDriverName>
+      <MsEdgeDriverName Condition="'$(MsEdgeDriverName)' == ''">msedgedriver</MsEdgeDriverName>
+    </PropertyGroup>
+
+    <PropertyGroup>
+      <MsEdgeDriverSrcPath Condition=" '$(MsEdgeDriverSrcPath)' == '' ">$(MSBuildThisFileDirectory)..\driver\$(WebDriverPlatform)\$(MsEdgeDriverName)</MsEdgeDriverSrcPath>
+      <MsEdgeDriverTargetPath Condition=" '$(MsEdgeDriverTargetPath)' == '' ">$(TargetDir)</MsEdgeDriverTargetPath>
+    </PropertyGroup>
+
+    <!-- Detect that the project type is Web or Not. -->
+    <PropertyGroup Condition="'$(ProjectTypeIsWeb)' == ''">
+      <ProjectTypeGuidsPadded Condition="'$(ProjectTypeGuidsPadded)' == ''">;$(ProjectTypeGuids);</ProjectTypeGuidsPadded>
+      <!-- Reference: http://www.mztools.com/Articles/2008/MZ2008017.aspx -->
+      <!-- HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\VisualStudio\14.0\Projects -->
+      <ProjectTypeIsWeb Condition="$(ProjectTypeGuidsPadded.IndexOf(';{349c5851-65df-11da-9384-00065b846f21};')) != -1">true</ProjectTypeIsWeb>
+      <ProjectTypeIsWeb Condition="'$(ProjectTypeIsWeb)' == ''">false</ProjectTypeIsWeb>
+    </PropertyGroup>
+
+    <!-- Detect definition of compilation symbol that is "_PUBLISH_MSEDGEDRIVER", or "PublishMsEdgeDriver" msbuild property. -->
+    <PropertyGroup Condition="'$(PublishMsEdgeDriver)' == ''">
+      <DefineConstantsPadded Condition="'$(DefineConstantsPadded)' == ''">;$(DefineConstants);</DefineConstantsPadded>
+      <PublishMsEdgeDriver Condition="$(DefineConstantsPadded.IndexOf(';_PUBLISH_MSEDGEDRIVER;')) != -1">true</PublishMsEdgeDriver>
+      <PublishMsEdgeDriver Condition="'$(PublishMsEdgeDriver)' == ''">false</PublishMsEdgeDriver>
+    </PropertyGroup>
+
+    <!-- Setup driver file as project item if publishing driver file is enabled. -->
+
+    <ItemGroup Condition="'$(PublishMsEdgeDriver)|$(ProjectTypeIsWeb)' == 'true|true'">
+      <None Include="$(MsEdgeDriverSrcPath)">
+        <Link>$(MsEdgeDriverName)</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <Visible>False</Visible>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(PublishMsEdgeDriver)|$(ProjectTypeIsWeb)' == 'true|false'">
+      <Content Include="$(MsEdgeDriverSrcPath)">
+        <Link>$(MsEdgeDriverName)</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <Visible>False</Visible>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </Content>
+    </ItemGroup>
+
   </Target>
 
-  <!-- Detect that project type is Web or Not. -->
-  <Choose>
-    <When Condition="'$(ProjectTypeIsWeb)' == ''">
-      <PropertyGroup>
-        <ProjectTypeGuidsPadded Condition="'$(ProjectTypeGuidsPadded)' == ''">;$(ProjectTypeGuids);</ProjectTypeGuidsPadded>
-        <!-- Reference: http://www.mztools.com/Articles/2008/MZ2008017.aspx -->
-        <!-- HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Microsoft\VisualStudio\14.0\Projects -->
-        <ProjectTypeIsWeb Condition="$(ProjectTypeGuidsPadded.IndexOf(';{349c5851-65df-11da-9384-00065b846f21};')) != -1">true</ProjectTypeIsWeb>
-        <ProjectTypeIsWeb Condition="'$(ProjectTypeIsWeb)' == ''">false</ProjectTypeIsWeb>
-      </PropertyGroup>
-    </When>
-  </Choose>
-  <!-- Detect definition of compilation symbol that is "_PUBLISH_MSEDGEDRIVER", or "PublishMsEdgeDriver" msbuild property. -->
-  <Choose>
-    <When Condition="'$(PublishMsEdgeDriver)' == ''">
-      <PropertyGroup>
-        <DefineConstantsPadded Condition="'$(DefineConstantsPadded)' == ''">;$(DefineConstants);</DefineConstantsPadded>
-        <PublishMsEdgeDriver Condition="$(DefineConstantsPadded.IndexOf(';_PUBLISH_MSEDGEDRIVER;')) != -1">true</PublishMsEdgeDriver>
-        <PublishMsEdgeDriver Condition="'$(PublishMsEdgeDriver)' == ''">false</PublishMsEdgeDriver>
-      </PropertyGroup>
-    </When>
-  </Choose>
-  <!-- Setup driver file as project item if publishing driver file is enabled. -->
-  <Choose>
-    <When Condition="'$(PublishMsEdgeDriver)|$(ProjectTypeIsWeb)' == 'true|true'">
-      <ItemGroup>
-        <None Include="$(MsEdgeDriverSrcPath)">
-          <Link>$(MsEdgeDriverName)</Link>
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-          <Visible>False</Visible>
-        </None>
-      </ItemGroup>
-    </When>
-    <When Condition="'$(PublishMsEdgeDriver)|$(ProjectTypeIsWeb)' == 'true|false'">
-      <ItemGroup>
-        <Content Include="$(MsEdgeDriverSrcPath)">
-          <Link>$(MsEdgeDriverName)</Link>
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-          <Visible>False</Visible>
-        </Content>
-      </ItemGroup>
-    </When>
-  </Choose>
+  <Target Name="DumpPropertiesMsEdgeDriver" BeforeTargets="AfterClean;AfterBuild;CopyMsEdgeDriverToBin" Condition="'$(DumpPropertiesMsEdgeDriver)' == 'true'">
+    <Message Importance="high" Text="MsEdgeDriverName is [$(MsEdgeDriverName)]" />
+    <Message Importance="high" Text="MsEdgeDriverSrcPath is [$(MsEdgeDriverSrcPath)]" />
+    <Message Importance="high" Text="MsEdgeDriverTargetPath is [$(MsEdgeDriverTargetPath)]" />
+    <Message Importance="high" Text="ProjectTypeIsWeb is [$(ProjectTypeIsWeb)]" />
+    <Message Importance="high" Text="PublishMsEdgeDriver is [$(PublishMsEdgeDriver)]" />
+    <Message Importance="high" Text="WebDriverPlatform is [$(WebDriverPlatform)]" />
+  </Target>
+  
+  <Target Name="ChmodMsEdgeDriver" BeforeTargets="BeforeBuild">
+    <Exec Command="chmod +x &quot;$(MsEdgeDriverSrcPath)&quot;" Condition=" '$(OS)' != 'Windows_NT' AND '$(WebDriverPlatform)' != 'win32'" />
+  </Target>
+
   <!-- If publishing driver file is disabled (it's default behavior), define "copy" and "clean" build task. -->
   <Target Name="CopyMsEdgeDriverToBin" BeforeTargets="AfterBuild" Condition="'$(PublishMsEdgeDriver)' == 'false'">
     <Copy SourceFiles="$(MsEdgeDriverSrcPath)" DestinationFiles="$(MsEdgeDriverTargetPath)$(MsEdgeDriverName)" SkipUnchangedFiles="true"></Copy>
+     <Message Text="sourcefiles: $(MsEdgeDriverSrcPath)" />
+     <Message Text="destinationfiles: $(MsEdgeDriverTargetPath)$(MsEdgeDriverName)" Importance="high" />
   </Target>
   <Target Name="DeleteMsEdgeDriverFromBin" BeforeTargets="AfterClean" Condition="'$(PublishMsEdgeDriver)' == 'false'">
     <Delete Files="$(MsEdgeDriverTargetPath)$(MsEdgeDriverName)"></Delete>
   </Target>
+
 </Project>

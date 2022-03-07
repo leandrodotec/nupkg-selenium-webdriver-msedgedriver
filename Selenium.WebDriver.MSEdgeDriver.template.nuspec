@@ -3,7 +3,7 @@
   <metadata>
     <id>Selenium.WebDriver.MSEdgeDriver</id>
     <version>_version_</version>
-    <title>Selenium.WebDriver.EdgeChromiumDriver(Win64, Mac)</title>
+    <title>Selenium.WebDriver.EdgeChromiumDriver(Win32, Win64, Mac, Linux64)</title>
     <authors>leandrogomes</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <projectUrl>https://github.com/leandrodotec/nupkg-selenium-webdriver-msedgedriver</projectUrl>
@@ -20,7 +20,9 @@ CONTRIBUTORS: Help improve this project at https://github.com/leandrodotec/nupkg
     <file src="download\_version_\edgedriver_win32\msedgedriver.exe" target="driver/win32"/>
     <file src="download\_version_\edgedriver_win64\msedgedriver.exe" target="driver/win64"/>
     <file src="download\_version_\edgedriver_mac64\msedgedriver" target="driver/mac64/msedgedriver"/>
+    <file src="download\_version_\edgedriver_linux64\msedgedriver" target="driver/linux64/msedgedriver"/>
     <file src="Selenium.WebDriver.MSEdgeDriver.targets" target="build"/>
+    <file src="DefinePropertiesMSEdgeDriver.targets" target="build"/>
     <file src="license.txt" target="license/license.txt"/>
   </files>
 </package>
