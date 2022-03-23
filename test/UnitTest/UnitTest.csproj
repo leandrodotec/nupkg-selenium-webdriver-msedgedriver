@@ -3,8 +3,9 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
-
     <IsPackable>false</IsPackable>
+	<PublishMsEdgeDriver>true</PublishMsEdgeDriver>
+	<PublishChromeDriver>true</PublishChromeDriver>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,13 +21,6 @@
     <ProjectReference Include="..\MsEdgeClient\MsEdgeClient.csproj" />
   </ItemGroup>
 
-    <Target Name="CopyMsEdgeDriverToBin" BeforeTargets="AfterBuild">
-	    <Copy SourceFiles="$(SolutionDir)MsEdgeClient\bin\$(Configuration)\$(TargetFramework)\msedgedriver.exe" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true"/>
-	    <Message Text="$(MSBuildProjectName) -> $(SolutionDir)MsEdgeClient\bin\$(Configuration)\$(TargetFramework)\msedgedriver.exe" Importance="high" />
-    </Target>
+ 
 	
-    <Target Name="DeleteMsEdgeDriverFromBin" BeforeTargets="AfterClean">
-	    <Delete Files="$(TargetDir)msedgedriver.exe"></Delete>
-    </Target>
-
 </Project>
