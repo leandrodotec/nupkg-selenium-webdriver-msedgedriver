@@ -15,7 +15,7 @@ namespace WebDriver.EdgeChromiumDriver.UnitTest
             var g = new MsEdgeClient.EdgeClient();
             var result = g.Search();
 
-            Assert.AreEqual("", result);
+            Assert.AreEqual("Selenium", result);
         }
 
         [Test]
@@ -24,16 +24,16 @@ namespace WebDriver.EdgeChromiumDriver.UnitTest
             var g = new ChromeClient.ChromeClient();
             var result = g.Search();
 
-            Assert.AreEqual("", result);
+            Assert.AreEqual("Selenium", result);
         }
 
         [Test]
         public void FirefoxTest()
         {
-            var g = new ChromeClient.ChromeClient();
+            var g = new Firefox.FirefoxClient();
             var result = g.Search();
 
-            Assert.AreEqual("", result);
+            Assert.AreEqual("Selenium", result);
         }
     }
 }
