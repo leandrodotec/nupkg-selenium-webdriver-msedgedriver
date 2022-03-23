@@ -30,7 +30,30 @@ For example, to automatically download the Microsoft Edge Driver and create the 
 getPackage.bat 84.0.522.49
 ```
 
-
 # Contributing
 
 Most the process is automated, but I still need to check MS Edge Driver's page and execute the batch file manually. I am trying to do this once a month. If you would like to have faster releases, please contact me to become a contributor.
+
+
+# Cross-platform building and publishing
+
+Edge driver developers normally releases versions with win32, win64, mac and linux binaries, but sometimes they decide to release one version with just linux, or just mac and windows binaries. 
+The automated process can only make nuget packages of full releases.
+
+# How to include the driver file into published files?
+
+"msedgedriver(.exe)" isn't included in published files on default configuration. This behavior is by design and follows https://raw.githubusercontent.com/jsakamoto/nupkg-selenium-webdriver-chromedriver/ design. For more info reffer to guides at https://raw.githubusercontent.com/jsakamoto/nupkg-selenium-webdriver-chromedriver.
+
+To include published files, define `PublishMsEdgeDriver` property with value is "true" in MSBuild file (.csproj, .vbproj, etc...) to publish the driver file instead of define compilation symbol.
+
+```xml
+  <Project ...>
+    ...
+    <PropertyGroup>
+      ...
+      <PublishMsEdgeDriver>true</PublishMsEdgeDriver>
+      ...
+    </PropertyGroup>
+...
+</Project>
+```
