@@ -1,3 +1,11 @@
+# DISCLAIMER: Maybe this package is not for you
+
+From v4.0, Selenium has Selenium Manager (https://www.selenium.dev/documentation/selenium_manager/):
+
+```
+Selenium Manager is a command-line tool implemented in Rust that provides automated driver and browser management for Selenium. Selenium bindings use this tool by default, so you do not need to download it or add anything to your code or do anything else to use it
+```
+
 # Install the NuGet Package
 
 ```

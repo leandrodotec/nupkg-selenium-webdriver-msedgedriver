@@ -7,16 +7,17 @@
     <authors>leandrogomes</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <projectUrl>https://github.com/leandrodotec/nupkg-selenium-webdriver-msedgedriver</projectUrl>
-    <license type="file">LICENSE</license>
+    <license type="file">LICENSE.txt</license>
     <description>
 Installs the new Edge (Chromium) WebDriver Package to be used with Selenium. Just like the other Selenium.WebDriver packages, "msedgedriver(.exe)" is copied from package folder to bin folder when the project builds.
 
 CONTRIBUTORS: Help improve this project at https://github.com/leandrodotec/nupkg-selenium-webdriver-msedgedriver.
 
 This is a prerelease version of Selenium.WebDriver.MSEdgeDriver.
-</description>
+    </description>
     <summary>Edge (Chromium) WebDriver Package (Win64, Mac).</summary>
     <tags>Selenium Edge Chromium WebDriver msedgedriver</tags>
+    <readme>README.md</readme>
   </metadata>
   <files>
     <file src="download\_version_\edgedriver_win32\msedgedriver.exe" target="driver/win32"/>
@@ -25,6 +26,7 @@ This is a prerelease version of Selenium.WebDriver.MSEdgeDriver.
     <file src="download\_version_\edgedriver_linux64\msedgedriver" target="driver/linux64/msedgedriver"/>
     <file src="Selenium.WebDriver.MSEdgeDriver.targets" target="build"/>
     <file src="DefinePropertiesMSEdgeDriver.targets" target="build"/>
-    <file src="LICENSE" target="LICENSE"/>
+    <file src="LICENSE.txt" target="LICENSE.txt"/>
+    <file src="README.md" target="." />
   </files>
 </package>
