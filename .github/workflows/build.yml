@@ -1,0 +1,58 @@
+name: Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version type (LATEST_STABLE or LATEST_BETA)'
+        required: true
+        default: 'LATEST_STABLE'
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.x'
+
+    - name:  Download the latest Microsoft Edge WebDriver version, build, and publish NuGet package
+      env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      shell: pwsh
+      run: |
+        # Determine which version to download based on user input
+        $versionType = "${{ github.event.inputs.version_type }}"
+
+        # Define the URL based on the selected version type
+        $url = "https://msedgewebdriverstorage.blob.core.windows.net/edgewebdriver/$versionType"
+          
+        # Download the content and store it in a variable
+        $latestVersion = Invoke-RestMethod -Uri $url
+        
+        # Clean the variable to remove any non-printable characters
+        $latestVersion = $latestVersion -replace '[^\x20-\x7E]', ''
+        
+        # Write the cleaned variable to the console
+        Write-Host "The latest version is $latestVersion"
+        
+        # Call the batch file with different arguments based on version type
+        $nugetPackageSuffix = ""
+        if ($versionType -eq "LATEST_STABLE") {
+          & .\BuildPackage.bat $latestVersion
+        } elseif ($versionType -eq "LATEST_BETA") {
+          & .\BuildPackage.bat $latestVersion pre
+          $nugetPackageSuffix = "-pre"
+        } else {
+          Write-Error "Invalid version type specified"
+          exit 1
+        }
+
+        # Run dotnet nuget push
+        dotnet nuget push .\dist\Selenium.WebDriver.MSEdgeDriver.$latestVersion$nugetPackageSuffix.nupkg -k $NUGET_API_KEY -s https://api.nuget.org/v3/index.json
