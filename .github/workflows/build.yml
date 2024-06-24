@@ -23,8 +23,6 @@ jobs:
         dotnet-version: '8.x'
 
     - name:  Download the latest Microsoft Edge WebDriver version, build, and publish NuGet package
-      env:
-          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
       shell: pwsh
       run: |
         # Determine which version to download based on user input
@@ -55,4 +53,4 @@ jobs:
         }
         # Run dotnet nuget push
         Write-Host "dotnet nuget push .\dist\Selenium.WebDriver.MSEdgeDriver.$latestVersion$nugetPackageSuffix.nupkg --source nuget.org --api-key %%NUGET_API_KEY%%"
-        dotnet nuget push .\dist\Selenium.WebDriver.MSEdgeDriver.$latestVersion$nugetPackageSuffix.nupkg --source nuget.org --api-key $NUGET_API_KEY 
+        dotnet nuget push .\dist\Selenium.WebDriver.MSEdgeDriver.$latestVersion$nugetPackageSuffix.nupkg --source nuget.org --api-key ${{ secrets.NUGET_API_KEY }} 
