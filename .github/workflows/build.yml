@@ -54,5 +54,5 @@ jobs:
           exit 1
         }
         # Run dotnet nuget push
-        Write-Host "dotnet nuget push .\dist\Selenium.WebDriver.MSEdgeDriver.$latestVersion$nugetPackageSuffix.nupkg --source nuget.org --api-key %%NUGET_API_KEY%%
+        Write-Host "dotnet nuget push .\dist\Selenium.WebDriver.MSEdgeDriver.$latestVersion$nugetPackageSuffix.nupkg --source nuget.org --api-key %%NUGET_API_KEY%%"
         dotnet nuget push .\dist\Selenium.WebDriver.MSEdgeDriver.$latestVersion$nugetPackageSuffix.nupkg --source nuget.org --api-key $NUGET_API_KEY 
