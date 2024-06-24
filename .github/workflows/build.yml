@@ -53,6 +53,6 @@ jobs:
           Write-Error "Invalid version type specified"
           exit 1
         }
-        Write-Host "dotnet nuget push --source nuget.org --api-key %%NUGET_API_KEY%% .\dist\Selenium.WebDriver.MSEdgeDriver.$latestVersion$nugetPackageSuffix.nupkg"
         # Run dotnet nuget push
-        dotnet nuget push --source nuget.org --api-key $NUGET_API_KEY .\dist\Selenium.WebDriver.MSEdgeDriver.$latestVersion$nugetPackageSuffix.nupkg
+        Write-Host "dotnet nuget push .\dist\Selenium.WebDriver.MSEdgeDriver.$latestVersion$nugetPackageSuffix.nupkg --source nuget.org --api-key %%NUGET_API_KEY%%
+        dotnet nuget push .\dist\Selenium.WebDriver.MSEdgeDriver.$latestVersion$nugetPackageSuffix.nupkg --source nuget.org --api-key $NUGET_API_KEY 
