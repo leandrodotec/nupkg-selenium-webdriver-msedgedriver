@@ -2,11 +2,11 @@ name: Scheduled LATEST_STABLE
 
 on:
   schedule:
-    - cron 22 10 9,1,15 * *
+    - cron: 22 10 9,1,15 * *
 
 jobs:
   call-workflow:
-    uses: leandrodotec/nupkg-selenium-webdriver-msedgedriver/blob/master/.github/workflows/build.yml@master
+    uses: ./build.yml
     with:
       version_type: LATEST_STABLE
 
