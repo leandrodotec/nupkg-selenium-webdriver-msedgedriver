@@ -2,7 +2,7 @@ name: Scheduled LATEST_STABLE
 
 on:
   schedule:
-    - cron: 21 5 9,1,15 * *
+    - cron: 2 22 9,1,15 * *
 
 jobs:
   call-workflow:
