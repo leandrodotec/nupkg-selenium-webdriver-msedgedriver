@@ -6,7 +6,7 @@ on:
 
 jobs:
   call-workflow:
-    uses: ./.github/workflows/build.yml@master
+    uses: ./.github/workflows/build.yml
     with:
       version_type: LATEST_STABLE
 
