@@ -6,7 +6,7 @@ on:
 
 jobs:
   call-workflow:
-    uses: ./build.yml
+    uses: ./build.yml@master
     with:
       version_type: LATEST_STABLE
 
