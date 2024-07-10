@@ -41,7 +41,7 @@ jobs:
         
         # Clean the variable to remove any non-printable characters
         $latestVersion = $latestVersion -replace '[^\x20-\x7E]', ''
-        echo "{latestVersion}={$latestVersione}" >> $GITHUB_ENV
+        echo "{latestVersion}={$latestVersion}" >> $GITHUB_ENV
         
         # Write the cleaned variable to the console
         Write-Host "The latest version is $latestVersion"
