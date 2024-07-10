@@ -2,11 +2,18 @@ name: Build
 
 on:
   workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version type (LATEST_STABLE or LATEST_BETA)'
+        required: true
+        default: 'LATEST_STABLE'
+  workflow_call:
     secrets:
       NUGET_API_KEY:
         required: true 
     inputs:
       version_type:
+        type: string
         description: 'Version type (LATEST_STABLE or LATEST_BETA)'
         required: true
         default: 'LATEST_STABLE'
