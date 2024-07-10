@@ -8,6 +8,9 @@ on:
         required: true
         default: 'LATEST_STABLE'
 
+env:
+  latestVersion: some
+
 jobs:
   call-workflow-stable:
     uses: ./.github/workflows/build.yml
