@@ -1,0 +1,18 @@
+name: Manual trigger - ${{ inputs.version_type }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version type (LATEST_STABLE or LATEST_BETA)'
+        required: true
+        default: 'LATEST_STABLE'
+
+jobs:
+  call-workflow-stable:
+    uses: ./.github/workflows/build.yml
+    with:
+      version_type: ${{ inputs.version_type }}
+    secrets:
+      NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+

@@ -1,12 +1,6 @@
 name: Build
 
 on:
-  workflow_dispatch:
-    inputs:
-      version_type:
-        description: 'Version type (LATEST_STABLE or LATEST_BETA)'
-        required: true
-        default: 'LATEST_STABLE'
   workflow_call:
     secrets:
       NUGET_API_KEY:
@@ -36,7 +30,8 @@ jobs:
       shell: pwsh
       run: |
         # Determine which version to download based on user input
-        $versionType = "${{ github.event.inputs.version_type }}"
+        $versionType = "${{ inputs.version_type }}"
+        Write-Host "The verion type is $versionType"
 
         # Define the URL based on the selected version type
         $url = "https://msedgewebdriverstorage.blob.core.windows.net/edgewebdriver/$versionType"

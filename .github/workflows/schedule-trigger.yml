@@ -1,8 +1,8 @@
-name: Scheduled LATEST_STABLE
+name: Schedule
 
 on:
   schedule:
-    - cron: 15 22,21 10,1,15 * *
+    - cron: 20 22,21 10,1,15 * *
 
 jobs:
   call-workflow-stable:
