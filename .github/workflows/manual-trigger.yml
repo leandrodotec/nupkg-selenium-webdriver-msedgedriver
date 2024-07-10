@@ -1,5 +1,5 @@
 name: Manual trigger
-run-name: "Manual trigger ${{ github.event.inputs.version_type }}"
+run-name: "Manual trigger ${{ env.latestVersion }}"
 on:
   workflow_dispatch:
     inputs:
@@ -15,4 +15,3 @@ jobs:
       version_type: ${{ inputs.version_type }}
     secrets:
       NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-
