@@ -1,5 +1,4 @@
-name: Manual trigger
-
+run-name: "Manual trigger ${{ github.event.inputs.version_type }}"
 on:
   workflow_dispatch:
     inputs:
