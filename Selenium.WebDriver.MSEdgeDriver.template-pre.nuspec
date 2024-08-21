@@ -15,7 +15,6 @@ CONTRIBUTORS: Help improve this project at https://github.com/leandrodotec/nupkg
 
 This is a prerelease version of Selenium.WebDriver.MSEdgeDriver.
     </description>
-    <summary>Edge (Chromium) WebDriver Package (Win64, Mac).</summary>
     <tags>Selenium Edge Chromium WebDriver msedgedriver</tags>
     <readme>README.md</readme>
   </metadata>
