@@ -7,17 +7,28 @@ set nugetFile=Selenium.WebDriver.MSEdgeDriver.nuspec
 
 mkdir .\download\%version%
 echo  Downloading %version%
+
+if [%~2]==[] copy Selenium.WebDriver.MSEdgeDriver.template.nuspec %nugetFile%
+if [%~2]==[pre] copy Selenium.WebDriver.MSEdgeDriver.template-pre.nuspec %nugetFile%
+
 curl https://msedgedriver.azureedge.net/%version%/edgedriver_win32.zip -o .\download\%version%\edgedriver_win32.zip
 curl https://msedgedriver.azureedge.net/%version%/edgedriver_win64.zip -o .\download\%version%\edgedriver_win64.zip
 curl https://msedgedriver.azureedge.net/%version%/edgedriver_mac64.zip -o .\download\%version%\edgedriver_mac64.zip
 curl https://msedgedriver.azureedge.net/%version%/edgedriver_linux64.zip -o .\download\%version%\edgedriver_linux64.zip
-PowerShell -Command "Expand-Archive -Path .\download\%version%\edgedriver_win32.zip -DestinationPath .\download\%version%\edgedriver_win32"
-PowerShell -Command "Expand-Archive -Path .\download\%version%\edgedriver_win64.zip -DestinationPath .\download\%version%\edgedriver_win64"
-PowerShell -Command "Expand-Archive -Path .\download\%version%\edgedriver_mac64.zip -DestinationPath .\download\%version%\edgedriver_mac64"
-PowerShell -Command "Expand-Archive -Path .\download\%version%\edgedriver_linux64.zip -DestinationPath .\download\%version%\edgedriver_linux64"
 
-if [%~2]==[] PowerShell -Command "(Get-Content -path Selenium.WebDriver.MSEdgeDriver.template.nuspec -Raw) -replace '_version_','%version%'" > %nugetFile%
-if [%~2]==[pre] PowerShell -Command "(Get-Content -path Selenium.WebDriver.MSEdgeDriver.template-pre.nuspec -Raw) -replace '_version_','%version%'" > %nugetFile%
+PowerShell -Command "Expand-Archive -Path .\download\%version%\edgedriver_win32.zip -DestinationPath .\download\%version%\edgedriver_win32"
+if not exist .\download\%version%\edgedriver_win32\msedgedriver.exe PowerShell -Command "(Get-Content -path %nugetFile% -Raw) -replace '<file src=\"download\\_version_\\edgedriver_win32\\msedgedriver.exe\" target=\"driver/win32\"/>','' | Set-Content -Path %nugetFile% "
+
+PowerShell -Command "Expand-Archive -Path .\download\%version%\edgedriver_win64.zip -DestinationPath .\download\%version%\edgedriver_win64"
+if not exist .\download\%version%\edgedriver_win64\msedgedriver.exe PowerShell -Command "(Get-Content -path %nugetFile% -Raw) -replace '<file src=\"download\\_version_\\edgedriver_win64\\msedgedriver.exe\" target=\"driver/win64\"/>','' | Set-Content -Path %nugetFile% "
+
+PowerShell -Command "Expand-Archive -Path .\download\%version%\edgedriver_mac64.zip -DestinationPath .\download\%version%\edgedriver_mac64"
+if not exist .\download\%version%\edgedriver_mac64\msedgedriver PowerShell -Command "(Get-Content -path %nugetFile% -Raw) -replace '<file src=\"download\\_version_\\edgedriver_mac64\\msedgedriver\" target=\"driver/mac64/msedgedriver\"/>','' | Set-Content -Path %nugetFile% "
+
+PowerShell -Command "Expand-Archive -Path .\download\%version%\edgedriver_linux64.zip -DestinationPath .\download\%version%\edgedriver_linux64"
+if not exist .\download\%version%\edgedriver_linux64\msedgedriver PowerShell -Command "(Get-Content -path %nugetFile% -Raw) -replace '<file src=\"download\\_version_\\edgedriver_linux64\\msedgedriver\" target=\"driver/linux64/msedgedriver\"/>','' | Set-Content -Path %nugetFile% "
+
+PowerShell -Command "(Get-Content -path %nugetFile% -Raw) -replace '_version_','%version%' | Set-Content -Path %nugetFile% "
 
 nuget pack %nugetFile% -OutputDirectory .\dist
 
