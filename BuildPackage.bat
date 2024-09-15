@@ -10,6 +10,7 @@ echo  Downloading %version%
 
 if [%~2]==[] copy Selenium.WebDriver.MSEdgeDriver.template.nuspec %nugetFile%
 if [%~2]==[pre] copy Selenium.WebDriver.MSEdgeDriver.template-pre.nuspec %nugetFile%
+if not exist %nugetFile% GOTO :finish
 
 curl https://msedgedriver.azureedge.net/%version%/edgedriver_win32.zip -o .\download\%version%\edgedriver_win32.zip
 curl https://msedgedriver.azureedge.net/%version%/edgedriver_win64.zip -o .\download\%version%\edgedriver_win64.zip
