@@ -1,5 +1,5 @@
 name: Manual trigger
-run-name: "Manual trigger ${{ env.latestVersion }}"
+run-name: "Manual trigger ${{ github.event.inputs.version_type }}"
 on:
   workflow_dispatch:
     inputs:
@@ -7,6 +7,9 @@ on:
         description: 'Version type (LATEST_STABLE or LATEST_BETA)'
         required: true
         default: 'LATEST_STABLE'
+
+env:
+  latestVersion: some
 
 jobs:
   call-workflow-stable:
