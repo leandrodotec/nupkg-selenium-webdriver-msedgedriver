@@ -12,10 +12,10 @@ if [%~2]==[] copy Selenium.WebDriver.MSEdgeDriver.template.nuspec %nugetFile%
 if [%~2]==[pre] copy Selenium.WebDriver.MSEdgeDriver.template-pre.nuspec %nugetFile%
 if not exist %nugetFile% GOTO :finish
 
-curl https://msedgedriver.azureedge.net/%version%/edgedriver_win32.zip -o .\download\%version%\edgedriver_win32.zip
-curl https://msedgedriver.azureedge.net/%version%/edgedriver_win64.zip -o .\download\%version%\edgedriver_win64.zip
-curl https://msedgedriver.azureedge.net/%version%/edgedriver_mac64.zip -o .\download\%version%\edgedriver_mac64.zip
-curl https://msedgedriver.azureedge.net/%version%/edgedriver_linux64.zip -o .\download\%version%\edgedriver_linux64.zip
+curl -fL https://msedgedriver.microsoft.com/%version%/edgedriver_win32.zip -o .\download\%version%\edgedriver_win32.zip || exit /b 1
+curl -fL https://msedgedriver.microsoft.com/%version%/edgedriver_win64.zip -o .\download\%version%\edgedriver_win64.zip || exit /b 1
+curl -fL https://msedgedriver.microsoft.com/%version%/edgedriver_mac64.zip -o .\download\%version%\edgedriver_mac64.zip || exit /b 1
+curl -fL https://msedgedriver.microsoft.com/%version%/edgedriver_linux64.zip -o .\download\%version%\edgedriver_linux64.zip || exit /b 1
 
 PowerShell -Command "Expand-Archive -Path .\download\%version%\edgedriver_win32.zip -DestinationPath .\download\%version%\edgedriver_win32"
 if not exist .\download\%version%\edgedriver_win32\msedgedriver.exe PowerShell -Command "(Get-Content -path %nugetFile% -Raw) -replace '<file src=\"download\\_version_\\edgedriver_win32\\msedgedriver.exe\" target=\"driver/win32\"/>','' | Set-Content -Path %nugetFile% "
