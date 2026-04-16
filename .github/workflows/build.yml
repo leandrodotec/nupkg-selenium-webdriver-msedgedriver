@@ -34,7 +34,7 @@ jobs:
         Write-Host "The verion type is $versionType"
 
         # Define the URL based on the selected version type
-        $url = "https://msedgewebdriverstorage.blob.core.windows.net/edgewebdriver/$versionType"
+        $url = "https://msedgedriver.microsoft.com/$versionType"
           
         # Download the content and store it in a variable
         $latestVersion = Invoke-RestMethod -Uri $url
